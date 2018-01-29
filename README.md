@@ -11,6 +11,7 @@ Configuration
   Configure a Lager handler like the following:
 
     {lager_rsyslog_backend, [
+        {preprocess_config, {Module, Function}}, % Optional
         {host, Hostname},       % The hostname of the rsyslog server
         {port, Port},           % The rsyslog port, defaults to 514
         {identity, Identity},   % A name for this application
@@ -46,3 +47,16 @@ Configuring Rsyslog is left as an exercise for the reader.
 [lager]: https://github.com/basho/lager
 [lager_syslog]: https://github.com/basho/lager_syslog
 [lager_levels]: https://github.com/basho/lager#syslog-style-loglevel-comparison-flags
+
+
+preprocess_config
+-----------------
+
+preprocess_config can be used to override options using a function call.
+
+```
+        {preprocess_config, {Module, Function}}, % Optional
+```
+
+During lager start, the function `Module:Function(Options) -> Options.` would
+be called.

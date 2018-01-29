@@ -47,13 +47,15 @@
 
 -include("lager_rsyslog.hrl").
 
-config_to_id(Config) ->
+config_to_id(Config0) ->
+    Config = lager_rsyslog_util:preprocess_config(Config0),
     Ident = lager_rsyslog_util:identity(Config),
     Facility = lager_rsyslog_util:facility(Config),
     {?MODULE, {Ident, Facility}}.
 
 
-init(Config) when is_list(Config) ->
+init(Config0) when is_list(Config0) ->
+    Config = lager_rsyslog_util:preprocess_config(Config0),
     {ok, Socket} = gen_udp:open(0),
     {ok, #st{
         id = config_to_id(Config),

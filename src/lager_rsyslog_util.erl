@@ -15,6 +15,7 @@
 -module(lager_rsyslog_util).
 
 -export([
+    preprocess_config/1,
     dest_addr/1,
     dest_port/1,
     identity/1,
@@ -28,6 +29,13 @@
 
 -include("lager_rsyslog.hrl").
 
+preprocess_config(Config) ->
+    case lists:keyfind(preprocess_config, 1, Config) of
+        {preprocess_config, {Module, Function}} ->
+            Module:Function(Config);
+        false ->
+            Config
+    end.
 
 dest_addr(Config) ->
     case lists:keyfind(host, 1, Config) of
